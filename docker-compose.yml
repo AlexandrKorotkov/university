@@ -1,0 +1,34 @@
+version: "2"
+
+volumes:
+  postgres_volume:
+
+services:
+
+  db:
+    build: ./db
+    restart: always
+    container_name: postgres
+    ports:                       # Можно раскоментить,
+      - "5432:5432"             # что бы работать с базой за пределами контейнера
+#    environment:
+#      POSTGRES_USER: "postgres"
+#      POSTGRES_PASSWORD: "1234"
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+  #  adminer:
+  #    image: adminer
+  #    restart: always
+  #    ports:
+  #      - "5080:8080"
+  server:
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+
+
+
